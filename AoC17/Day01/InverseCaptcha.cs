@@ -15,8 +15,8 @@ namespace AoC17.Day01
 
         int FindCaptcha(int part = 1)
         {
-            var innerSum = input.Select((x, index) => (index < input.Length - 1 && x == input[index + 1]) ? int.Parse(x.ToString()) : 0).Sum();
-            return innerSum + (input[0] == input[input.Length - 1] ? int.Parse(input[0].ToString()) : 0);
+            var offset = (part ==1) ? 1 : input.Length/2;
+            return input.Select((x, index) => x == input[(index + offset) % input.Length] ? int.Parse(x.ToString()) : 0).Sum();
         }
 
         public int Solve(int part = 1)
