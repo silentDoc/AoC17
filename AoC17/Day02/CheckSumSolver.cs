@@ -18,13 +18,9 @@
         int CheckLine(int[] numLine)
         {
             foreach (var num in numLine)
-                foreach (var num2 in numLine)
-                {
-                    if (num2 == num)
-                        continue;
+                foreach (var num2 in numLine.Where(x => x!=num))
                     if (num % num2 == 0)
                         return num / num2;
-                }
             return 0;
         }
 
