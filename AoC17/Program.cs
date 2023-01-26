@@ -1,5 +1,4 @@
-﻿using AoC17.Day01;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace AoC17
 {
@@ -9,7 +8,7 @@ namespace AoC17
         {
             int day = 2;
             int part = 1;
-            bool test = !false;
+            bool test = false;
 
             string input = "./Input/day" + day.ToString("00");
             input += (test) ? "_test.txt" : ".txt";
@@ -31,7 +30,7 @@ namespace AoC17
         static int day1(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
-            InverseCaptcha ic = new();
+            Day01.InverseCaptcha ic = new();
             ic.ParseInput(lines);
 
             return ic.Solve(part);
@@ -40,7 +39,10 @@ namespace AoC17
         static int day2(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
-            return 0;
+            Day02.CheckSumSolver checksum = new();
+            checksum.ParseInput(lines);
+
+            return checksum.Solve(part);
         }
 
     }
