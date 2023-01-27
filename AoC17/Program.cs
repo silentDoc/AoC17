@@ -6,9 +6,9 @@ namespace AoC17
     {
         static void Main(string[] args)
         {
-            int day = 2;
-            int part = 2;
-            bool test = false;
+            int day = 3;
+            int part = 1;
+            bool test = !false;
 
             string input = "./Input/day" + day.ToString("00");
             input += (test) ? "_test.txt" : ".txt";
@@ -20,6 +20,7 @@ namespace AoC17
             {
                 1 => day1(input, part).ToString(),
                 2 => day2(input, part).ToString(),
+                3 => day3(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented")
             };
             st.Stop();
@@ -43,6 +44,12 @@ namespace AoC17
             checksum.ParseInput(lines);
 
             return checksum.Solve(part);
+        }
+
+        static int day3(string input, int part)
+        {
+            var lines = File.ReadAllLines(input).ToList();
+            return 0;
         }
 
     }
