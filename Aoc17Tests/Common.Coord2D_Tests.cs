@@ -57,6 +57,17 @@ namespace AoC17Tests.Common
                                                                                   new Coord2D(-3, 4), new Coord2D(-3, 6)} };
         }
 
+        private static IEnumerable<object[]> TestData_Neighbors8()
+        {
+            yield return new object[] { new Coord2D(1, 1), new List<Coord2D>() { new Coord2D(0, 0), new Coord2D(0, 1), new Coord2D(0, 2),
+                                                                                 new Coord2D(1, 0),                    new Coord2D(1, 2),
+                                                                                 new Coord2D(2, 0), new Coord2D(2, 1), new Coord2D(2, 2)} };
+            
+            yield return new object[] { new Coord2D(-3, 5), new List<Coord2D>() {new Coord2D(-4, 4), new Coord2D(-4, 5), new Coord2D(-4, 6),
+                                                                                 new Coord2D(-3, 4),                    new Coord2D(-3, 6),
+                                                                                 new Coord2D(-2, 4), new Coord2D(-2, 5), new Coord2D(-2, 6)} };
+        }
+
         [DataTestMethod]
         [DynamicData(nameof(TestData_Sum), DynamicDataSourceType.Method)]
         public void Should_Sum_2_Coords(Coord2D coord_a, Coord2D coord_b, Coord2D expected)
@@ -135,6 +146,19 @@ namespace AoC17Tests.Common
         public void Should_Find_Neighbors(Coord2D coord_a, List<Coord2D> expected)
         {
             var neighs = coord_a.GetNeighbors().ToList();
+            var test = neighs.Count == expected.Count;
+
+            foreach (var neighbor in neighs)
+                test &= expected.Contains(neighbor);
+
+            Assert.IsTrue(test);
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(TestData_Neighbors8), DynamicDataSourceType.Method)]
+        public void Should_Find_Neighbors8(Coord2D coord_a, List<Coord2D> expected)
+        {
+            var neighs = coord_a.GetNeighbors8().ToList();
             var test = neighs.Count == expected.Count;
 
             foreach (var neighbor in neighs)
