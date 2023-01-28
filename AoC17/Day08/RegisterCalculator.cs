@@ -58,11 +58,16 @@
         int RunProgram(int part = 1)
         { 
             Dictionary<string, int> registers = new();
+            var allTimeMax = 0;
 
             for (int i = 0; i < operations.Count; i++)
+            {
                 operations[i].Run(registers);
+                if (part == 2)
+                    allTimeMax = Math.Max(allTimeMax, registers.Values.Max());
+            }
             
-            return registers.Values.Max();
+            return (part ==1) ? registers.Values.Max() : allTimeMax;
         }
 
         public int Solve(int part = 1)
