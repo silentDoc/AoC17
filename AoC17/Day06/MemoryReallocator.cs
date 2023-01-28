@@ -15,6 +15,7 @@
         int Redistribute(int part = 1)
         {
             HashSet<string> knownStates = new();
+            List<string> knownStatesList = new();   
             var currentState = GetCurrentState();
             var steps = 0;
 
@@ -28,9 +29,11 @@
                 for (int i = 1; i <= count; i++)
                     memoryBanks[(startingIndex + i) % memoryBanks.Count]++;
                 currentState = GetCurrentState();
+                knownStatesList.Add(currentState);  // For Part 2. 
+
                 steps++;
             }
-            return steps;
+            return (part == 1) ? steps : knownStatesList.Count - knownStatesList.IndexOf(currentState) -1;
         }
 
         public int Solve(int part = 1)
