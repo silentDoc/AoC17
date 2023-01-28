@@ -6,8 +6,8 @@ namespace AoC17
     {
         static void Main(string[] args)
         {
-            int day = 6;
-            int part = 2;
+            int day = 7;
+            int part = 1;
             bool test = !false;
 
             string input = "./Input/day" + day.ToString("00");
@@ -24,6 +24,7 @@ namespace AoC17
                 4 => day4(input, part).ToString(),
                 5 => day5(input, part).ToString(),
                 6 => day6(input, part).ToString(),
+                7 => day7(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented")
             };
             st.Stop();
@@ -83,6 +84,13 @@ namespace AoC17
             memoRealloc.ParseInput(lines);
 
             return memoRealloc.Solve(part);
+        }
+
+        static string day7(string input, int part)
+        {
+            var lines = File.ReadAllLines(input).ToList();
+
+            return "";
         }
 
     }
