@@ -8,7 +8,7 @@ namespace AoC17
         {
             int day = 6;
             int part = 1;
-            bool test = !false;
+            bool test = false;
 
             string input = "./Input/day" + day.ToString("00");
             input += (test) ? "_test.txt" : ".txt";
@@ -79,8 +79,10 @@ namespace AoC17
         static int day6(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
+            Day06.MemoryReallocator memoRealloc = new();
+            memoRealloc.ParseInput(lines);
 
-            return 0;
+            return memoRealloc.Solve(part);
         }
 
     }
