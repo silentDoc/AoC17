@@ -8,7 +8,7 @@ namespace AoC17
         {
             int day = 8;
             int part = 1;
-            bool test = !false;
+            bool test = false;
 
             string input = "./Input/day" + day.ToString("00");
             input += (test) ? "_test.txt" : ".txt";
@@ -99,8 +99,10 @@ namespace AoC17
         static int day8(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
+            Day08.RegisterCalculator calc = new();
+            calc.ParseInput(lines);
 
-            return 0;
+            return calc.Solve(part);
         }
 
     }
