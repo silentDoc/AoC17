@@ -1,6 +1,4 @@
-﻿using AoC17.Day02;
-
-namespace AoC17.Day04
+﻿namespace AoC17.Day04
 {
     internal class PassChecker
     {
