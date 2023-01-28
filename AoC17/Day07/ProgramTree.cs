@@ -8,8 +8,14 @@ namespace AoC17.Day07
     {
         public string Name = "";
         public string Parent = "";
-        public List<string> Children = new();
+        public List<AdventProgram> Children = new();
         public int Value;
+
+        public int BalanceWeight
+            => Value + Children.Sum(x => x.BalanceWeight);
+
+        public bool Balanced
+            => Children.Select(x => x.BalanceWeight).Distinct().Count() == 1;
     }
 
     internal class ProgramTree
@@ -39,7 +45,7 @@ namespace AoC17.Day07
                     childrenNode.Parent = name;
                     programs.Add(childrenNode);
 
-                    node.Children.Add(strChild);
+                    node.Children.Add(childrenNode);
                 }
             }
             programs.Add(node);
@@ -49,10 +55,43 @@ namespace AoC17.Day07
             => lines.ForEach(x => ParseLine(x));
 
 
-        string FindRootElement(int part = 1)
+        AdventProgram FindProblematicNode(AdventProgram? parentNode = null)
+        {
+            var currentNode = (parentNode == null) ? programs.First(x => string.IsNullOrEmpty(x.Parent)) : parentNode;
+            if (!currentNode.Balanced)
+            {
+                // Find the dissident node
+                var childrenWeights = currentNode.Children.Select(x => x.BalanceWeight).ToList();
+                var weightCount = childrenWeights.Select(x => childrenWeights.Count(y => y == x)).ToList();
+                var interestingIndex = weightCount.IndexOf(1);
+                var interestingNode = currentNode.Children[interestingIndex];
+
+                return FindProblematicNode(interestingNode);
+            }
+            // Our node has balanced children but was problematic 1 step ago, he is the culprit
+            return currentNode;
+        }
+
+        int SolvePart2()
+        {
+            var problematicNode = FindProblematicNode();
+            var parent = programs.First(x => x.Name == problematicNode.Parent);
+            
+            var childrenWeights = parent.Children.Select(x => x.BalanceWeight).ToList();
+            var weightCount = childrenWeights.Select(x => childrenWeights.Count(y => y == x)).ToList();
+            var difference = childrenWeights.Max() - childrenWeights.Min();
+
+            if (problematicNode.BalanceWeight == childrenWeights.Max())
+                return problematicNode.Value - difference;
+            else
+                return problematicNode.Value + difference;
+
+        }
+
+        string FindRootElement()
             => programs.Where(x => string.IsNullOrEmpty(x.Parent)).First().Name;
 
         public string Solve(int part = 1)
-            => FindRootElement(part);
+            => (part == 1) ? FindRootElement() : SolvePart2().ToString();
     }
 }
