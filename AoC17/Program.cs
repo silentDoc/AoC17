@@ -8,7 +8,7 @@ namespace AoC17
         {
             int day = 5;
             int part = 1;
-            bool test = !false;
+            bool test = false;
 
             string input = "./Input/day" + day.ToString("00");
             input += (test) ? "_test.txt" : ".txt";
@@ -69,8 +69,10 @@ namespace AoC17
         static int day5(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
+            Day05.CPUJumper jumper = new();
+            jumper.ParseInput(lines);
 
-            return 0;
+            return jumper.Solve(part);
         }
 
     }
