@@ -13,8 +13,9 @@
             var steps = 0;
             while (currentIndex < instructions.Count)
             {
-                instructions[currentIndex]++;
-                currentIndex += (instructions[currentIndex] - 1);
+                var currentJumpOffset = instructions[currentIndex];
+                instructions[currentIndex]+= (part ==1) ? 1 : (currentJumpOffset >= 3) ? -1 : 1;
+                currentIndex += currentJumpOffset;
                 steps++;
             }
             return steps;
