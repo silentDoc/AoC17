@@ -1,6 +1,4 @@
-﻿using System;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace AoC17.Day07
 {
@@ -8,11 +6,11 @@ namespace AoC17.Day07
     {
         public string Name = "";
         public string Parent = "";
+        public int Weight;
         public List<AdventProgram> Children = new();
-        public int Value;
 
         public int BalanceWeight
-            => Value + Children.Sum(x => x.BalanceWeight);
+            => Weight + Children.Sum(x => x.BalanceWeight);
 
         public bool Balanced
             => Children.Select(x => x.BalanceWeight).Distinct().Count() == 1;
@@ -28,70 +26,68 @@ namespace AoC17.Day07
             var groups = programRegex.Match(line).Groups;
 
             var name = groups[1].Value.Trim();
-            var size = int.Parse(groups[2].Value.Trim());
+            var weight = int.Parse(groups[2].Value.Trim());
 
-            var node = programs.Any(x => x.Name == name) ? programs.Where(x => x.Name == name).First() : new();
+            var program = programs.Any(x => x.Name == name) ? programs.Where(x => x.Name == name).First() : new();
+            program.Name = name;
+            program.Weight = weight;
 
-            node.Name = name;
-            node.Value = size;
+            programs.Add(program);
+            if (string.IsNullOrEmpty(groups[4].Value))
+                return;
 
-            if (!string.IsNullOrEmpty(groups[3].Value))
+            // We have children
+            var childrenList = groups[4].Value.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            foreach ( var strChild in childrenList ) 
             {
-                var childrenList = groups[4].Value.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                foreach ( var strChild in childrenList ) 
-                {
-                    var childrenNode = programs.Any(x => x.Name == strChild) ? programs.Where(x => x.Name == strChild).First() : new();
-                    childrenNode.Name = strChild;
-                    childrenNode.Parent = name;
-                    programs.Add(childrenNode);
-
-                    node.Children.Add(childrenNode);
-                }
+                var childrenProg = programs.Any(x => x.Name == strChild) ? programs.Where(x => x.Name == strChild).First() : new();
+                childrenProg.Name = strChild;
+                childrenProg.Parent = name;
+                program.Children.Add(childrenProg);
+                programs.Add(childrenProg);
             }
-            programs.Add(node);
         }
 
         public void ParseInput(List<string> lines)
             => lines.ForEach(x => ParseLine(x));
 
 
-        AdventProgram FindProblematicNode(AdventProgram? parentNode = null)
+        AdventProgram FindProblematicProg(AdventProgram? parentProg = null)
         {
-            var currentNode = (parentNode == null) ? programs.First(x => string.IsNullOrEmpty(x.Parent)) : parentNode;
-            if (!currentNode.Balanced)
+            var currentProg = (parentProg == null) ? programs.First(x => string.IsNullOrEmpty(x.Parent)) : parentProg;
+            if (!currentProg.Balanced)
             {
                 // Find the dissident node
-                var childrenWeights = currentNode.Children.Select(x => x.BalanceWeight).ToList();
+                var childrenWeights = currentProg.Children.Select(x => x.BalanceWeight).ToList();
                 var weightCount = childrenWeights.Select(x => childrenWeights.Count(y => y == x)).ToList();
                 var interestingIndex = weightCount.IndexOf(1);
-                var interestingNode = currentNode.Children[interestingIndex];
-
-                return FindProblematicNode(interestingNode);
+                var interestingNode = currentProg.Children[interestingIndex];
+                return FindProblematicProg(interestingNode);
             }
             // Our node has balanced children but was problematic 1 step ago, he is the culprit
-            return currentNode;
+            return currentProg;
         }
 
         int SolvePart2()
         {
-            var problematicNode = FindProblematicNode();
-            var parent = programs.First(x => x.Name == problematicNode.Parent);
+            var problematicProg = FindProblematicProg();
+            var parent = programs.First(x => x.Name == problematicProg.Parent);
             
             var childrenWeights = parent.Children.Select(x => x.BalanceWeight).ToList();
             var weightCount = childrenWeights.Select(x => childrenWeights.Count(y => y == x)).ToList();
             var difference = childrenWeights.Max() - childrenWeights.Min();
 
-            if (problematicNode.BalanceWeight == childrenWeights.Max())
-                return problematicNode.Value - difference;
+            if (problematicProg.BalanceWeight == childrenWeights.Max())
+                return problematicProg.Weight - difference;
             else
-                return problematicNode.Value + difference;
+                return problematicProg.Weight + difference;
 
         }
 
-        string FindRootElement()
+        string FindRootProg()
             => programs.Where(x => string.IsNullOrEmpty(x.Parent)).First().Name;
 
         public string Solve(int part = 1)
-            => (part == 1) ? FindRootElement() : SolvePart2().ToString();
+            => (part == 1) ? FindRootProg() : SolvePart2().ToString();
     }
 }
