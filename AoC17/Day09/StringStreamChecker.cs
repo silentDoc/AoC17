@@ -11,6 +11,7 @@
             var score = 0;
             var nestLevel = 0;
             bool inGarbage = false;
+            int cancelledChars = 0;
             for (int i = 0; i < text.Length; i++)
             {
                 if (inGarbage && text[i] == '!')
@@ -18,9 +19,12 @@
                     i++;
                     continue;
                 }
-                
+
                 if (inGarbage && text[i] != '>')
+                {
+                    cancelledChars++;
                     continue;
+                }
 
                 if (inGarbage && text[i] == '>')
                     inGarbage = false;
@@ -35,7 +39,7 @@
                     nestLevel--;
                 }
             }
-            return score;
+            return (part==1) ? score : cancelledChars;
         }
 
         public int Solve(int part = 1)
