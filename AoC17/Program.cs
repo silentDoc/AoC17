@@ -6,8 +6,8 @@ namespace AoC17
     {
         static void Main(string[] args)
         {
-            int day = 9;
-            int part = 2;
+            int day = 10;
+            int part = 1;
             bool test = false;
 
             string input = "./Input/day" + day.ToString("00");
@@ -118,7 +118,9 @@ namespace AoC17
         static int day10(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
-            return 0;
+            Day10.KnotHasher hasher = new();
+            hasher.ParseInput(lines);
+            return hasher.Solve(part);
         }
     }
 }
