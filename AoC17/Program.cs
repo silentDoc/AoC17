@@ -7,7 +7,7 @@ namespace AoC17
         static void Main(string[] args)
         {
             int day = 10;
-            int part = 1;
+            int part = 2;
             bool test = false;
 
             string input = "./Input/day" + day.ToString("00");
@@ -115,7 +115,7 @@ namespace AoC17
             return checker.Solve(part);
         }
 
-        static int day10(string input, int part)
+        static string day10(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
             Day10.KnotHasher hasher = new();
