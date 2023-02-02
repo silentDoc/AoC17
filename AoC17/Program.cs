@@ -8,7 +8,7 @@ namespace AoC17
         {
             int day = 11;
             int part = 1;
-            bool test = !false;
+            bool test = false;
 
             string input = "./Input/day" + day.ToString("00");
             input += (test) ? "_test.txt" : ".txt";
@@ -127,7 +127,9 @@ namespace AoC17
         static int day11(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
-            return 0;
+            Day11.HexNavigator navi = new();
+            navi.ParseInput(lines);
+            return navi.Solve(part);
         }
     }
 }
