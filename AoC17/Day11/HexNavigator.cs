@@ -33,12 +33,16 @@ namespace AoC17.Day11
         int FollowPath(int part =1)
         {
             Coord3D currentPosition = new Coord3D(0, 0, 0);
-
+            int maxDistance = 0;
+            int currentDistance = 0;
             foreach (var step in path)
+            {
                 currentPosition = Move(currentPosition, step);
-
-            int distance = Math.Max(Math.Abs(currentPosition.x), Math.Max(Math.Abs(currentPosition.y), Math.Abs(currentPosition.x)));
-            return distance;
+                currentDistance = Math.Max(Math.Abs(currentPosition.x), Math.Max(Math.Abs(currentPosition.y), Math.Abs(currentPosition.x)));
+                maxDistance = Math.Max(maxDistance, currentDistance);
+            }
+            
+            return part ==1 ? currentDistance : maxDistance;
         }
 
         public int Solve(int part = 1)
