@@ -6,9 +6,9 @@ namespace AoC17
     {
         static void Main(string[] args)
         {
-            int day = 11;
-            int part = 2;
-            bool test = false;
+            int day = 12;
+            int part = 1;
+            bool test = !false;
 
             string input = "./Input/day" + day.ToString("00");
             input += (test) ? "_test.txt" : ".txt";
@@ -29,6 +29,7 @@ namespace AoC17
                 9 => day9(input, part).ToString(),
                 10 => day10(input, part).ToString(),
                 11 => day11(input, part).ToString(),
+                12 => day12(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented")
             };
             st.Stop();
@@ -130,6 +131,12 @@ namespace AoC17
             Day11.HexNavigator navi = new();
             navi.ParseInput(lines);
             return navi.Solve(part);
+        }
+
+        static int day12(string input, int part)
+        {
+            var lines = File.ReadAllLines(input).ToList();
+            return 0;
         }
     }
 }
