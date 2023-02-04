@@ -6,8 +6,8 @@ namespace AoC17
     {
         static void Main(string[] args)
         {
-            int day = 12;
-            int part = 2;
+            int day = 13;
+            int part = 1;
             bool test = false;
 
             string input = "./Input/day" + day.ToString("00");
@@ -30,6 +30,7 @@ namespace AoC17
                 10 => day10(input, part).ToString(),
                 11 => day11(input, part).ToString(),
                 12 => day12(input, part).ToString(),
+                13 => day13(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented")
             };
             st.Stop();
@@ -139,6 +140,12 @@ namespace AoC17
             Day12.DigitalPlumber plumber = new();
             plumber.ParseInput(lines);
             return plumber.Solve(part);
+        }
+
+        static int day13(string input, int part)
+        {
+            var lines = File.ReadAllLines(input).ToList();
+            return 0;
         }
     }
 }
