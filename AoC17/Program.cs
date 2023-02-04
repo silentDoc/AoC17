@@ -145,7 +145,9 @@ namespace AoC17
         static int day13(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
-            return 0;
+            Day13.Firewall firewall = new();
+            firewall.ParseInput(lines);
+            return firewall.Solve();
         }
     }
 }
