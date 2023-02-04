@@ -7,7 +7,7 @@ namespace AoC17
         static void Main(string[] args)
         {
             int day = 13;
-            int part = 1;
+            int part = 2;
             bool test = false;
 
             string input = "./Input/day" + day.ToString("00");
@@ -147,7 +147,7 @@ namespace AoC17
             var lines = File.ReadAllLines(input).ToList();
             Day13.Firewall firewall = new();
             firewall.ParseInput(lines);
-            return firewall.Solve();
+            return firewall.Solve(part);
         }
     }
 }
