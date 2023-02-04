@@ -9,6 +9,8 @@
         public void ParseLengths(string line)
         {
             input = line;
+            if (input.IndexOf(",") == -1)       // Modified to suport Day 14 :)
+                return;
             var groups = line.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
             lengths = groups.Select(x => int.Parse(x)).ToList();
         }
@@ -41,7 +43,7 @@
             }
         }
 
-        string KnotHash(int part =1)
+        public string KnotHash(int part =1) // Made public to support Day14
         {
             int currentPosition = 0;
             int skipSize = 0;
