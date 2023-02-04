@@ -24,11 +24,11 @@
         public void ParseInput(List<string> lines)
             => lines.ForEach(x => adventProgramList.Add(ParseLine(x)));
 
-
-        int FindConnections(int part = 1)
+        // Standard BFS search
+        List<int> FindConnections(int targetNode)
         {
             HashSet<int> visitedNodes = new();
-            var startNode = adventProgramList.First(x => x.Num == 0);
+            var startNode = adventProgramList.First(x => x.Num == targetNode);
 
             Queue<AdventProgram> activeNodes = new();
             activeNodes.Enqueue(startNode);
@@ -43,11 +43,24 @@
                     if (!visitedNodes.Contains(progNum))
                         activeNodes.Enqueue(adventProgramList.First(x => x.Num == progNum));
             }
-            return visitedNodes.Count; 
+            return visitedNodes.ToList(); 
+        }
+
+        int FindGroups()
+        { 
+            var listPrograms = adventProgramList.Select(x => x.Num).OrderBy(x =>x).ToList();
+            var groups = 0;
+            while (listPrograms.Count > 0)
+            {
+                var target = listPrograms[0];
+                var visited = FindConnections(target);
+                groups++;
+                visited.ForEach(x => listPrograms.Remove(x));
+            }
+            return groups;
         }
 
         public int Solve(int part = 1)
-            => FindConnections(part);
-
+            => part ==1 ? FindConnections(0).Count : FindGroups();
     }
 }
