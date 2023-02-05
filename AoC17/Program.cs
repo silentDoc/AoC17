@@ -203,5 +203,11 @@ namespace AoC17
             maze.ParseInput(lines);
             return maze.Solve(part);
         }
+
+        static string day20(string input, int part)
+        {
+            var lines = File.ReadAllLines(input).ToList();
+            return "";
+        }
     }
 }
