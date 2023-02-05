@@ -1,0 +1,51 @@
+﻿using AoC17.Common;
+using System.Text.RegularExpressions;
+
+namespace AoC17.Day20
+{
+    class Particle
+    {
+        public int id;
+        public Coord3D position; 
+        public Coord3D velocity; 
+        public Coord3D acceleration;
+
+        public int AccelMagnitude
+            => acceleration.Manhattan(new Coord3D(0, 0, 0));
+        public double AccelModule
+            => acceleration.VectorModule;
+    }
+
+    internal class ParticleRun
+    {
+        List<Particle> particles = new List<Particle>();
+
+        Particle ParseLine(string line, int row)
+        {
+            Particle retVal = new();
+            Regex regexParticle = new Regex(@"<(\s?-?\d+),(\s?-?\d+),(\s?-?\d+)>, v=<(\s?-?\d+),(\s?-?\d+),(\s?-?\d+)>, a=<(\s?-?\d+),(\s?-?\d+),(\s?-?\d+)>");
+            var groups = regexParticle.Match(line).Groups;
+            retVal.position = new Coord3D(int.Parse(groups[1].Value), int.Parse(groups[2].Value), int.Parse(groups[3].Value));
+            retVal.velocity = new Coord3D(int.Parse(groups[4].Value), int.Parse(groups[5].Value), int.Parse(groups[6].Value));
+            retVal.acceleration = new Coord3D(int.Parse(groups[7].Value), int.Parse(groups[8].Value), int.Parse(groups[9].Value));
+            retVal.id = row;
+            return retVal;
+        }
+
+        public void ParseInput(List<string> lines)
+        {
+            for (int i = 0; i < lines.Count; i++)
+                particles.Add(ParseLine(lines[i], i));
+        }
+
+        public string FindClosest()
+        {
+            var minAccel = particles.Min(x => x.AccelModule);
+            var candidates = particles.Where(x => x.AccelModule == minAccel).ToList();
+            return candidates[0].id.ToString();
+        }
+
+        public string Solve(int part = 1)
+            => FindClosest();
+    }
+}

@@ -6,8 +6,8 @@ namespace AoC17
     {
         static void Main(string[] args)
         {
-            int day = 19;
-            int part = 2;
+            int day = 20;
+            int part = 1;
             bool test = false;
 
             string input = "./Input/day" + day.ToString("00");
@@ -37,6 +37,7 @@ namespace AoC17
                 17 => day17(input, part).ToString(),
                 18 => day18(input, part).ToString(),
                 19 => day19(input, part).ToString(),
+                20 => day20(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented")
             };
             st.Stop();
@@ -207,7 +208,9 @@ namespace AoC17
         static string day20(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
-            return "";
+            Day20.ParticleRun partRun = new();
+            partRun.ParseInput(lines);
+            return partRun.Solve(part);
         }
     }
 }
