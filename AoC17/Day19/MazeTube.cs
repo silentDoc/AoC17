@@ -43,11 +43,12 @@ namespace AoC17.Day19
             int mazeWidth = maze.Max(x => x.Length);
             int mazeHeight = maze.Count;
             StringBuilder retVal = new();
-
+            int steps = 0;
             while (true)
             {
                 var previousPosition = currentPosition;
                 currentPosition = Move(currentPosition, currentDirection);
+                steps++;
                 var posChar = GetPos(currentPosition);
 
                 if (posChar == ' ')
@@ -73,7 +74,7 @@ namespace AoC17.Day19
                         currentDirection = Direction.Right;
                 }
             }
-            return retVal.ToString();
+            return part ==1 ? retVal.ToString() : steps.ToString();
         }
 
         public string Solve(int part = 1)
