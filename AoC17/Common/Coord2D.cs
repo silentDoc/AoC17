@@ -58,6 +58,9 @@
         public int Manhattan(Coord2D other)
             => Math.Abs(x - other.x) + Math.Abs(y - other.y);
 
+        public double VectorModule
+            => Math.Sqrt( x*x + y*y );
+
         public IEnumerable<Coord2D> GetNeighbors(Arrangement arrange = Arrangement.UpRightDownLeft)
         {
             if (arrange == Arrangement.UpRightDownLeft)
