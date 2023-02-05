@@ -8,7 +8,7 @@ namespace AoC17
         {
             int day = 18;
             int part = 1;
-            bool test = !false;
+            bool test = false;
 
             string input = "./Input/day" + day.ToString("00");
             input += (test) ? "_test.txt" : ".txt";
@@ -187,10 +187,12 @@ namespace AoC17
             return spin.Solve(part);
         }
 
-        static int day18(string input, int part)
+        static long day18(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
-            return 0;
+            Day18.DuetAssembly asm = new();
+            asm.ParseInput(lines);
+            return asm.Solve(part);
         }
     }
 }
