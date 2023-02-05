@@ -10,9 +10,15 @@ namespace AoC17.Day20
         public Coord3D velocity; 
         public Coord3D acceleration;
 
-        public int AccelMagnitude
-            => acceleration.Manhattan(new Coord3D(0, 0, 0));
-        public double AccelModule
+        public void Move()
+        {
+            velocity += acceleration;
+            position += velocity;
+        }
+
+        // I am not sure if it this was the way to implement part1, but physics tells me that in the long run, 
+        // the particle with least acceleration magnitude will stay the closest to origin. 
+        public double AccelModule   
             => acceleration.VectorModule;
     }
 
@@ -38,14 +44,36 @@ namespace AoC17.Day20
                 particles.Add(ParseLine(lines[i], i));
         }
 
-        public string FindClosest()
+        public int RemoveCollisions()
+        {
+            int numRounds = 50;   // Started with 20000 - stabilizes at 39
+            for (int i = 0; i < numRounds; i++)
+            {
+                particles.ForEach(x => x.Move());
+                var posCounts = particles.Select(x => x.position).ToList().GroupBy(x => x)
+                                         .ToDictionary(y => y.Key, y => y.Count())
+                                         .OrderByDescending(z => z.Value);
+
+                var collisions = posCounts.Where(x => x.Value>1).Select(x => x.Key).ToList();
+
+                foreach (var collision in collisions)
+                {
+                    var particlesToRemove = particles.Where(x => x.position == collision).ToList();
+                    foreach (var collidingParticle in particlesToRemove)
+                        particles.Remove(collidingParticle);
+                }
+            }
+            return particles.Count;
+        }
+
+        public int FindClosest()
         {
             var minAccel = particles.Min(x => x.AccelModule);
             var candidates = particles.Where(x => x.AccelModule == minAccel).ToList();
-            return candidates[0].id.ToString();
+            return candidates[0].id;    // My input yielded a unique minimum
         }
 
-        public string Solve(int part = 1)
-            => FindClosest();
+        public int Solve(int part = 1)
+            => part == 1 ? FindClosest() : RemoveCollisions();
     }
 }

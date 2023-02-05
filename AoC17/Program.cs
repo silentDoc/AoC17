@@ -7,7 +7,7 @@ namespace AoC17
         static void Main(string[] args)
         {
             int day = 20;
-            int part = 1;
+            int part = 2;
             bool test = false;
 
             string input = "./Input/day" + day.ToString("00");
@@ -205,7 +205,7 @@ namespace AoC17
             return maze.Solve(part);
         }
 
-        static string day20(string input, int part)
+        static int day20(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
             Day20.ParticleRun partRun = new();
