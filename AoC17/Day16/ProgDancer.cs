@@ -57,7 +57,6 @@ namespace AoC17.Day16
                 dmove.op1 = ops[0].Trim();
                 dmove.op2 = ops[1].Trim();
             }
-
             return dmove;
         }
 
@@ -71,7 +70,26 @@ namespace AoC17.Day16
             return proglist;
         }
 
+        string DanceForever()
+        {
+            List<string> states = new();
+            int loop = 0;
+            while (!states.Contains(proglist))
+            {
+                states.Add(proglist);
+                proglist = DoDance();
+                loop++;
+            }
+
+            int firstIndex = proglist.IndexOf(proglist);
+            int loopSize = loop - firstIndex;
+
+            int remainder = (1000000000 - firstIndex) % loopSize;
+            return states[firstIndex + remainder];
+        }
+
+
         public string Solve(int part = 1)
-            => DoDance();
+            => part == 1 ? DoDance() : DanceForever();
     }
 }
