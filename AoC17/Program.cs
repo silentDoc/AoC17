@@ -8,7 +8,7 @@ namespace AoC17
         {
             int day = 22;
             int part = 1;
-            bool test = !false;
+            bool test = false;
 
             string input = "./Input/day" + day.ToString("00");
             input += (test) ? "_test.txt" : ".txt";
@@ -227,7 +227,9 @@ namespace AoC17
         static int day22(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
-            return 0;
+            Day22.TravellerVirus virus = new();
+            virus.ParseInput(lines);
+            return virus.Solve(part);
         }
     }
 }
