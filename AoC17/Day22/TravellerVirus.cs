@@ -6,11 +6,13 @@ namespace AoC17.Day22
     {
         public Coord2D Position = new(0,0); // x, y
         public bool Infected;
+        public int Status;  // 0 - clean, 1 - weakened , 2-infected , 3 - flagged
 
         public GridNode(int col, int row, bool infected)
         {
             Position = new(col, row);
             Infected = infected;
+            Status = infected ? 2 : 0;
         }
     }
 
@@ -20,6 +22,14 @@ namespace AoC17.Day22
         Right = 1,
         Down = 2,
         Left = 3
+    }
+
+    enum NodeStatus
+    { 
+        Clean  =0, 
+        Weakened = 1, 
+        Infected = 2, 
+        Flagged = 4
     }
 
     internal class TravellerVirus
@@ -70,26 +80,64 @@ namespace AoC17.Day22
                _ => throw new InvalidDataException("Unknown direction - " + dir.ToString())
            };
 
+        Direction Reverse(Direction dir)
+           => dir switch
+           {
+               Direction.Up => Direction.Down,
+               Direction.Right => Direction.Left,
+               Direction.Down => Direction.Up,
+               Direction.Left => Direction.Right,
+               _ => throw new InvalidDataException("Unknown direction - " + dir.ToString())
+           };
+
         int CountInfections(int part = 1)
         {
-            var numBursts = part == 1 ? 10000 : 0;
+            var numBursts = part == 1 ? 10000 : 10000000;
             var currentPosition = new Coord2D(0, 0);
             var currentDirection = Direction.Up;
             var infectionCount = 0;
 
+            // Optimizations for part 2 - use of a hashset and a dictionary instead of the list
+            // and avoiding enums and switches and using sums and module instead
+            HashSet<Coord2D> knownPositions = new();            
+            Dictionary<Coord2D, GridNode> lookup = new();
+            foreach (var node in cluster)
+            {
+                knownPositions.Add(node.Position);
+                lookup[node.Position] = node;
+            }
+
             for (int burst = 0; burst < numBursts; burst++)
             {
-                var node = cluster.FirstOrDefault(x => x.Position == currentPosition);
-                if (node == null)
-                {
-                    node = new GridNode(currentPosition.x, currentPosition.y, false);
-                    cluster.Add(node);
-                }
 
-                currentDirection = (node.Infected) ? TurnRight(currentDirection) : TurnLeft(currentDirection);
-                node.Infected = !node.Infected;
-                if (node.Infected) 
-                    infectionCount++;
+                var isNewNode = knownPositions.Add(currentPosition);
+                var node = (isNewNode) ? new GridNode(currentPosition.x, currentPosition.y, false) : lookup[currentPosition];
+
+                if (isNewNode)
+                    lookup[currentPosition] = node;
+
+                if (part == 1)
+                {
+                    currentDirection = (node.Infected) ? TurnRight(currentDirection) : TurnLeft(currentDirection);
+                    node.Infected = !node.Infected;
+                    if (node.Infected)
+                        infectionCount++;
+                }
+                else  // Part 2
+                {
+                    currentDirection = node.Status switch
+                    {
+                        0 => TurnLeft(currentDirection),
+                        1 => currentDirection,
+                        2 => TurnRight(currentDirection),
+                        3 => Reverse(currentDirection),
+                        _ => throw new InvalidDataException("Unknown status - " + node.Status.ToString())
+                    };
+
+                    node.Status = (node.Status+1) %4;
+                    if (node.Status == 2)
+                        infectionCount++;
+                }
                 currentPosition += Move(currentDirection);
             }
             return infectionCount;
