@@ -1,12 +1,10 @@
-﻿using System.Diagnostics;
-
-namespace AoC17.Day21
+﻿namespace AoC17.Day21
 {
     public class FractalPattern
     {
-        public char[][] InputPattern = null;
+        public char[][] InputPattern;
         List<char[][]> matches = new();
-        public char[][] Output = null;
+        public char[][] Output;
         int size = 0;
 
         public bool IsMatch(char[][] testPattern)
@@ -40,14 +38,12 @@ namespace AoC17.Day21
             Output = new char[outputSize][];
             for (var i = 0; i < outputSize; i++)
                 Output[i] = outputPatternGroup[i].ToCharArray();
-            
 
             // Precalculate flips and rotations
             matches.Add(InputPattern);
             var rotate90 = InputPattern.Select(a => a.ToArray()).ToArray();     // Fast way to clone jagged arrays
             var rotate180 = InputPattern.Select(a => a.ToArray()).ToArray();    
             var rotate270 = InputPattern.Select(a => a.ToArray()).ToArray();    
-            
             
             for (int row = 0; row < size; row++)
                 for (int col = 0; col < size; col++)
@@ -73,19 +69,23 @@ namespace AoC17.Day21
                 matches.Add(flipH);
                 matches.Add(flipV);
             }
-           
-
-            
         }
     }
 
     internal class FractalGenerator
     {
         List<FractalPattern> patterns = new();
-        char[][] fractalImage;
+        char[][] fractalImage = new char[3][];
 
         public void ParseInput(List<string> lines)
             => lines.ForEach(line => patterns.Add(new FractalPattern(line)));
+
+        void PrintFractal(char[][] fractal, bool bTrace = false)
+        {
+            var strs = fractal.Select(x => new string(x)).ToList();
+            strs.ForEach(s => Console.WriteLine(s));
+            Console.WriteLine("");
+        }
 
         char[][] FractalStep(char[][] currentImage)
         {
@@ -110,49 +110,28 @@ namespace AoC17.Day21
                     for (int k = 0; k < chunkSize; k++)
                         in_pattern[k] = selectedRows[k][(c * chunkSize)..((c + 1) * chunkSize)];
 
-                    var matchingPattern = patterns.FirstOrDefault(x => x.IsMatch(in_pattern));
-
-                    PrintFractal(in_pattern, true);
-                    PrintFractal(matchingPattern.InputPattern, true);
-
+                    var matchingPattern = patterns.First(x => x.IsMatch(in_pattern));
 
                     for (int out_row = 0; out_row < nextChunkSize; out_row++)
                         for (int out_col = 0; out_col < nextChunkSize; out_col++)
                             nextImage[r * nextChunkSize + out_row][c * nextChunkSize + out_col] = matchingPattern.Output[out_row][out_col];
                 }
             }
-
             return nextImage;
         }
-
-        void PrintFractal(char[][] fractal, bool bTrace = false)
-        {
-            var strs = fractal.Select(x => new string(x)).ToList();
-            if (bTrace)
-            {
-                strs.ForEach(s => Trace.WriteLine(s));
-                Trace.WriteLine("");
-                return;
-            }
-
-            strs.ForEach(s => Console.WriteLine(s));
-            Console.WriteLine("");
-        }
-
+                
         int BuildFractal(int part = 1)
         {
             fractalImage = new char[3][];
-            fractalImage[0] = (new string(".#.")).ToCharArray();
+            fractalImage[0] = (new string(".#.")).ToCharArray();    // Starting value (fractal seed)
             fractalImage[1] = (new string("..#")).ToCharArray();
             fractalImage[2] = (new string("###")).ToCharArray();
-            int rounds = (part == 1) ? 5 :0;
-
-            PrintFractal(fractalImage);
+            int rounds = (part == 1) ? 5 :18;
 
             for (int i = 0; i < rounds; i++)
             {
                 fractalImage = FractalStep(fractalImage);
-                PrintFractal(fractalImage);
+                Console.WriteLine(i.ToString());
             }
 
             var litPixels = 0;
