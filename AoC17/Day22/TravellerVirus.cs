@@ -24,14 +24,6 @@ namespace AoC17.Day22
         Left = 3
     }
 
-    enum NodeStatus
-    { 
-        Clean  =0, 
-        Weakened = 1, 
-        Infected = 2, 
-        Flagged = 4
-    }
-
     internal class TravellerVirus
     {
         List<GridNode> cluster = new();
@@ -109,7 +101,6 @@ namespace AoC17.Day22
 
             for (int burst = 0; burst < numBursts; burst++)
             {
-
                 var isNewNode = knownPositions.Add(currentPosition);
                 var node = (isNewNode) ? new GridNode(currentPosition.x, currentPosition.y, false) : lookup[currentPosition];
 
