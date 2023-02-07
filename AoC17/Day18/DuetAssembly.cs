@@ -18,7 +18,7 @@ namespace AoC17.Day18
             return retVal;
         }
 
-        long sendToOtherProgram(Queue<long>? otherProgramQueue, long value)
+        long sendToOtherProgram(Queue<long> otherProgramQueue, long value)
         {
             otherProgramQueue.Enqueue(value);
             return value;

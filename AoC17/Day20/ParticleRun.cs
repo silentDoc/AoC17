@@ -6,9 +6,9 @@ namespace AoC17.Day20
     class Particle
     {
         public int id;
-        public Coord3D position; 
-        public Coord3D velocity; 
-        public Coord3D acceleration;
+        public Coord3D position= new Coord3D(0,0,0); 
+        public Coord3D velocity = new Coord3D(0, 0, 0); 
+        public Coord3D acceleration = new Coord3D(0, 0, 0);
 
         public void Move()
         {
