@@ -6,9 +6,9 @@ namespace AoC17
     {
         static void Main(string[] args)
         {
-            int day = 23;
-            int part = 2;
-            bool test = false;
+            int day = 24;
+            int part = 1;
+            bool test = !false;
 
             string input = "./Input/day" + day.ToString("00");
             input += (test) ? "_test.txt" : ".txt";
@@ -41,6 +41,7 @@ namespace AoC17
                 21 => day21(input, part).ToString(),
                 22 => day22(input, part).ToString(),
                 23 => day23(input, part).ToString(),
+                24 => day24(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented")
             };
             st.Stop();
@@ -237,6 +238,12 @@ namespace AoC17
             Day23.CoProAssembly asm = new();
             asm.ParseInput(lines);
             return asm.Solve(part);
+        }
+
+        static int day24(string input, int part)
+        {
+            var lines = File.ReadAllLines(input).ToList();
+            return 0;
         }
     }
 }
