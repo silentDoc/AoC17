@@ -108,7 +108,10 @@ namespace AoC17.Day24
         {
             var bridges = BuildBridge(new List<Component>(), components).ToList();
 
-            return bridges.Max(bridge => BridgeStrength(bridge));
+            var longestBridgeCount = bridges.Max(bridge => bridge.Count);
+
+            return (part == 1) ? bridges.Max(bridge => BridgeStrength(bridge)) 
+                               : bridges.Where(x => x.Count == longestBridgeCount).Max(x => BridgeStrength(x));
         }
 
         public int Solve(int part = 1)
