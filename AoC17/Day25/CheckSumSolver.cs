@@ -89,10 +89,7 @@
             return values.Values.Sum();
         }
 
-
         public int Solve(int part = 1)
             => DiagnosticChecksum(part);
-
-
     }
 }
