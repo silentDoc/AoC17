@@ -8,7 +8,7 @@ namespace AoC17
         {
             int day = 24;
             int part = 1;
-            bool test = !false;
+            bool test = false;
 
             string input = "./Input/day" + day.ToString("00");
             input += (test) ? "_test.txt" : ".txt";
@@ -232,6 +232,7 @@ namespace AoC17
             virus.ParseInput(lines);
             return virus.Solve(part);
         }
+        
         static long day23(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
@@ -243,7 +244,9 @@ namespace AoC17
         static int day24(string input, int part)
         {
             var lines = File.ReadAllLines(input).ToList();
-            return 0;
+            Day24.BridgeBuilder builder = new();
+            builder.ParseInput(lines);
+            return builder.Solve(part);
         }
     }
 }
