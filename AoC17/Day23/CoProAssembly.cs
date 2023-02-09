@@ -177,8 +177,6 @@
                     return h;            // jnz 1 3
                 b += 17;                 // sub b -17
             } while (true);
-
-            return 0;
         }
 
         long CodeInInput3()
@@ -222,8 +220,6 @@
                     return h;            // jnz 1 3
                 b += 17;                 // sub b -17
             } while (true);
-
-            return 0;
         }
 
         long CodeInInput4()

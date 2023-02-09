@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AoC17.Day24
+﻿namespace AoC17.Day24
 {
 
     class Component
@@ -73,14 +66,11 @@ namespace AoC17.Day24
                 var lastComponent = usedComponents.Last();
                 var validNextComponents = avaialableComponents.Where(x => x.Elegible(lastComponent.Free)).ToList();
 
-                if (validNextComponents.Count == 0)
-                {
-                    // No more components available, we've reached the bridge end
+                if (validNextComponents.Count == 0)     // No more components available, we've reached the bridge end
                     yield return usedComponents;
-
-                }
                 else
                 {
+                    // We're not returning ALL the bridges, only the ones that have no more elements to be added. It does not affect the solutions
                     foreach (var nextComponent in validNextComponents)
                     {
                         nextComponent.Connect(lastComponent.Free);
